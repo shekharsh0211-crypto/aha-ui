@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useDashboard } from '@/hooks/useDashboard';
 import { useBookings } from '@/hooks/useBookings';
 import { BookingStatusBadge } from '@/components/ui/StatusBadge';
-import { formatDate, formatCurrency } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 const DATE_TABS = ['All', 'Yesterday', 'Today', 'Tomorrow'];
 
@@ -135,7 +135,6 @@ export default function DashboardPage() {
                   <th className="text-left px-5 py-3 font-medium hidden md:table-cell">Pickup to Drop</th>
                   <th className="text-left px-5 py-3 font-medium hidden lg:table-cell">Vehicle</th>
                   <th className="text-left px-5 py-3 font-medium">Status</th>
-                  <th className="text-left px-5 py-3 font-medium hidden lg:table-cell">Amount</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -159,9 +158,6 @@ export default function DashboardPage() {
                     </td>
                     <td className="px-5 py-3">
                       <BookingStatusBadge status={b.status} />
-                    </td>
-                    <td className="px-5 py-3 text-gray-600 font-medium text-xs hidden lg:table-cell">
-                      {formatCurrency(b.totalAmount, b.currency)}
                     </td>
                   </tr>
                 ))}

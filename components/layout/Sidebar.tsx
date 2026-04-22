@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, CalendarCheck, Car,
-  MessageSquare, History, LogOut, Users
+  MessageSquare, History, LogOut, Users, KeyRound
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -47,7 +47,7 @@ export function Sidebar({ onClose }: SidebarProps) {
         <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#f59e0b' }}>
           <Car size={14} className="text-white" />
         </div>
-        <p className="font-bold text-white text-sm">AHA Travel</p>
+        <p className="font-bold text-white text-sm">EbixCabs</p>
       </div>
 
       {/* Nav */}
@@ -102,15 +102,27 @@ export function Sidebar({ onClose }: SidebarProps) {
         )}
       </nav>
 
-      {/* Logout */}
-      <div className="px-3 py-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
+      {/* Bottom actions */}
+      <div className="px-3 py-3 border-t space-y-0.5" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
+        <Link
+          href="/change-password"
+          onClick={onClose}
+          className={cn(
+            'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all',
+            isActive('/change-password') ? 'text-white font-medium' : 'font-normal hover:bg-white/5'
+          )}
+          style={isActive('/change-password') ? { backgroundColor: '#2563eb' } : { color: '#8a9bbf' }}
+        >
+          <KeyRound size={15} style={isActive('/change-password') ? { color: 'white' } : { color: '#8a9bbf' }} />
+          <span>Change Password</span>
+        </Link>
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm transition-all hover:bg-white/5"
           style={{ color: '#8a9bbf' }}
         >
           <LogOut size={15} style={{ color: '#8a9bbf' }} />
-          <span>+ Logout</span>
+          <span>Logout</span>
         </button>
       </div>
     </div>

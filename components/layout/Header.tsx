@@ -8,6 +8,7 @@ const PAGE_TITLES: Record<string, string> = {
   '/dashboard': 'Dashboard',
   '/feedback': 'Support',
   '/profile': 'Profile',
+  '/change-password': 'Change Password',
   '/admin/users': 'User Management',
 };
 

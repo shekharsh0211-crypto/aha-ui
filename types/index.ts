@@ -61,6 +61,8 @@ export interface Booking {
   pickupDatetime: string;
   dropoffDatetime?: string;
   passengerCount?: number;
+  passengerName?: string;
+  passengerPhone?: string;
   specialInstructions?: string;
   totalAmount?: number;
   currency?: string;

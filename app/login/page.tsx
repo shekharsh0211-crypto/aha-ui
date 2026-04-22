@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Eye, EyeOff } from 'lucide-react';
@@ -8,6 +8,12 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
+
+  // Restore remembered email on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('rememberedEmail');
+    if (saved) { setEmail(saved); setRemember(true); }
+  }, []);
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -20,6 +26,11 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password, remember);
+      if (remember) {
+        localStorage.setItem('rememberedEmail', email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
       router.push('/dashboard');
     } catch (err: any) {
       setError(err?.response?.data?.message || 'Invalid email or password');
@@ -46,12 +57,30 @@ export default function LoginPage() {
           <div className="bg-white rounded-2xl shadow-lg px-8 py-10">
             {/* Logo */}
             <div className="flex flex-col items-center mb-8">
-              <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center mb-4">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19.5 2.5S18 1 16.5 2.5L13 6 4.8 4.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 5.5 5.3c.4.4.9.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ backgroundColor: '#f59e0b' }}>
+                <svg width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Cab body */}
+                  <path d="M6 20V14L10 8H22L26 14V20H6Z" fill="white"/>
+                  {/* Roof / cabin */}
+                  <path d="M11 8L13 4H19L21 8H11Z" fill="white" opacity="0.8"/>
+                  {/* Windows */}
+                  <path d="M12 8L13.5 5H18.5L20 8H12Z" fill="#f59e0b"/>
+                  {/* Checker stripe */}
+                  <rect x="6" y="15" width="3" height="2" fill="#1e293b"/>
+                  <rect x="12" y="15" width="3" height="2" fill="#1e293b"/>
+                  <rect x="18" y="15" width="3" height="2" fill="#1e293b"/>
+                  {/* Wheels */}
+                  <circle cx="11" cy="20" r="3" fill="#1e293b"/>
+                  <circle cx="11" cy="20" r="1.5" fill="#94a3b8"/>
+                  <circle cx="21" cy="20" r="3" fill="#1e293b"/>
+                  <circle cx="21" cy="20" r="1.5" fill="#94a3b8"/>
+                  {/* Door handle */}
+                  <rect x="15" y="12" width="4" height="1" rx="0.5" fill="#f59e0b"/>
+                  {/* Ground line */}
+                  <line x1="4" y1="23" x2="28" y2="23" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">AHA Travel</h1>
+              <h1 className="text-2xl font-bold text-gray-900">EbixCabs</h1>
               <p className="text-sm text-gray-500 mt-1">Sign in to your account</p>
             </div>
 
@@ -61,9 +90,12 @@ export default function LoginPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-3" autoComplete="off">
               <input
+                id="email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -73,7 +105,10 @@ export default function LoginPage() {
 
               <div className="relative">
                 <input
+                  id="password"
+                  name="password"
                   type={showPwd ? 'text' : 'password'}
+                  autoComplete="new-password"
                   placeholder="Password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}

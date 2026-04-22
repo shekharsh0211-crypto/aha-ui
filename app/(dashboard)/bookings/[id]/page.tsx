@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   ArrowLeft, MapPin, Calendar, Users, FileText,
-  Clock, AlertCircle, RefreshCw, XCircle
+  Clock, AlertCircle, RefreshCw, XCircle, User, Phone
 } from 'lucide-react';
 import { useBooking, useCancelBooking, useRebookBooking } from '@/hooks/useBookings';
 import { BookingStatusBadge } from '@/components/ui/StatusBadge';
@@ -123,6 +123,28 @@ export default function BookingDetailPage() {
               <div>
                 <p className="text-xs text-gray-500">Passengers</p>
                 <p className="text-sm font-medium text-gray-900">{booking.passengerCount}</p>
+              </div>
+            </div>
+          )}
+          {booking.passengerName && (
+            <div className="flex items-start gap-3">
+              <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <User size={14} className="text-indigo-600" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500">Passenger Name</p>
+                <p className="text-sm font-medium text-gray-900">{booking.passengerName}</p>
+              </div>
+            </div>
+          )}
+          {booking.passengerPhone && (
+            <div className="flex items-start gap-3">
+              <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Phone size={14} className="text-teal-600" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500">Passenger Phone</p>
+                <p className="text-sm font-medium text-gray-900">{booking.passengerPhone}</p>
               </div>
             </div>
           )}
